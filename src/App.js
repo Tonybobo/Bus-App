@@ -17,10 +17,11 @@ const darkTheme = createTheme({
 });
 
 function App() {
-	useEffect(() => {
-		setBusStop(JSON.parse(localStorage.getItem('BusStop')));
-	}, []);
 	const [busStop, setBusStop] = useState([]);
+	useEffect(() => {
+		const local = JSON.parse(localStorage.getItem('BusStop'));
+		setBusStop(local);
+	}, []);
 
 	return (
 		<ThemeProvider theme={darkTheme}>
@@ -51,7 +52,7 @@ function App() {
 						border: 0.5,
 						borderRadius: 1
 					}}>
-					{busStop.map((busStop) => {
+					{busStop?.map((busStop) => {
 						return (
 							<BusInfo
 								description={busStop.Description}

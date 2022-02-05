@@ -4,14 +4,16 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 
 function BusInfo({ code, description }) {
 	const [loading, setLoading] = useState(false);
 	const [busArrival, setBusArrival] = useState([]);
-	const handleSubmit = async () => {
+	const [pause, setPause] = useState(false);
+
+	const firstFetch = async () => {
 		setLoading(true);
 		const { data } = await axios.post(
 			'http://localhost:5001/bus-web-e67df/asia-southeast1/api/getBusArrival',
@@ -25,11 +27,35 @@ function BusInfo({ code, description }) {
 		setLoading(false);
 	};
 
+	useEffect(() => {
+		firstFetch();
+		if (pause) {
+			const interval = setInterval(async () => {
+				setLoading(true);
+				const { data } = await axios.post(
+					'http://localhost:5001/bus-web-e67df/asia-southeast1/api/getBusArrival',
+					{
+						data: {
+							busStopCode: code
+						}
+					}
+				);
+				setBusArrival(data.Services);
+				setLoading(false);
+			}, 10000);
+			return () => clearInterval(interval);
+		}
+	}, [pause]);
+
+	console.log(busArrival);
+
 	return (
 		<div>
 			<Accordion
 				sx={{ borderBottom: 1, borderColor: 'grey.500' }}
-				onClick={handleSubmit}>
+				onChange={(event, expanded) => {
+					setPause(expanded);
+				}}>
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
 					aria-controls="panel1a-content"
@@ -41,9 +67,10 @@ function BusInfo({ code, description }) {
 						<CircularProgress />
 					) : (
 						<Typography>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-							eget.
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
+							fugit fuga asperiores blanditiis eos placeat omnis minus, ullam
+							laudantium quae aut sint ab adipisci enim sapiente cupiditate
+							repellendus! Nesciunt, quibusdam?
 						</Typography>
 					)}
 				</AccordionDetails>
