@@ -27,7 +27,7 @@ function BusInfo({ code, description }) {
 	const firstFetch = async () => {
 		setLoading(true);
 		const { data } = await axios.post(
-			'http://localhost:5001/bus-web-e67df/asia-southeast1/api/getBusArrival',
+			'https://asia-southeast1-bus-web-e67df.cloudfunctions.net/api/getBusArrival',
 			{
 				data: {
 					busStopCode: code
@@ -37,6 +37,7 @@ function BusInfo({ code, description }) {
 		setBusArrival(data.Services);
 		setLoading(false);
 	};
+	console.log(busArrival);
 
 	useEffect(() => {
 		firstFetch();
@@ -44,7 +45,7 @@ function BusInfo({ code, description }) {
 			const interval = setInterval(async () => {
 				setLoading(true);
 				const { data } = await axios.post(
-					'http://localhost:5001/bus-web-e67df/asia-southeast1/api/getBusArrival',
+					'https://asia-southeast1-bus-web-e67df.cloudfunctions.net/api/getBusArrival',
 					{
 						data: {
 							busStopCode: code
@@ -96,14 +97,14 @@ function BusInfo({ code, description }) {
 									<Grid
 										container
 										style={{ marginBottom: '1em' }}
-										key={busService.ServiceNo}
+										key={busService.Latitude}
 										spacing={2}>
 										<Grid item xs={2} p={0} m={1}>
 											<Item
 												style={{
 													borderRight: '1px solid grey'
 												}}>
-												<Typography variant="body1" component="body1">
+												<Typography variant="body1">
 													{busService.ServiceNo}
 												</Typography>
 											</Item>

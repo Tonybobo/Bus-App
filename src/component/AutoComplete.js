@@ -22,7 +22,7 @@ function AutoComplete() {
 	const handleSubmit = async () => {
 		if (!value) return;
 		const { data } = await axios.post(
-			'http://localhost:5001/bus-web-e67df/asia-southeast1/api/getBusArrival',
+			'https://asia-southeast1-bus-web-e67df.cloudfunctions.net/api/getBusArrival',
 			{
 				data: {
 					busStopCode: value.BusStopCode
@@ -63,7 +63,7 @@ function AutoComplete() {
 			setLoading(true);
 			let skip = skipValue(value);
 			const { data } = await axios.post(
-				'http://localhost:5001/bus-web-e67df/asia-southeast1/api/getBusStop',
+				'https://asia-southeast1-bus-web-e67df.cloudfunctions.net/api/getBusStop',
 				{
 					data: { skip: skip }
 				}
