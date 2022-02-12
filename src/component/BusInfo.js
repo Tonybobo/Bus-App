@@ -37,7 +37,6 @@ function BusInfo({ code, description }) {
 		setBusArrival(data.Services);
 		setLoading(false);
 	};
-	console.log(busArrival);
 
 	useEffect(() => {
 		firstFetch();
